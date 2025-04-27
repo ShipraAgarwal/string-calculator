@@ -1,20 +1,49 @@
 class StringCalculator
-  def add(str_of_numbers:, delimiter: ',')
-    return 0 if str_of_numbers.empty?
+  def add(str:)
+    return 0 if str.empty?
 
-    if str_of_numbers.start_with?('//')
-      parts = str_of_numbers.split('\n', 2)
-      delimiter = parts[0][2]
-      str_of_numbers = parts[1]
-    end
+    numbers = parse_string(str: str)
 
-    numbers = str_of_numbers.gsub('\n', delimiter).split(delimiter).map(&:to_i)
-    negatives = numbers.select(&:negative?)
-
-    return "negatives not allowed: #{negatives.join(', ')}" unless negatives.empty?
+    check_for_negatives(numbers: numbers)
 
     numbers.reject! { |number| number > 1000 }
 
-    return numbers.sum
+    numbers.sum
+  end
+
+  private
+
+  def parse_string(str:)
+    delimiter = ','
+
+    if str.start_with?('//')
+      parts = str.split('\n', 2)
+      delimiter = parts[0][2..]
+
+
+      if delimiter.start_with?('[') && delimiter.end_with?(']')
+        delimiter[0] = ''
+        delimiter[delimiter.length - 1] = ''
+      end
+
+      str = parts[1]
+    end
+
+    get_numbers(string_of_numbers: str, delimiter: delimiter)
+  end
+
+  def get_numbers(string_of_numbers:, delimiter:)
+    string_of_numbers
+      .gsub('\n', delimiter)
+      .split(delimiter)
+      .map(&:to_i)
+  end
+
+  def check_for_negatives(numbers:)
+    negatives = numbers.select(&:negative?)
+
+    return if negatives.empty?
+
+    raise "negatives not allowed: #{negatives.join(', ')}"
   end
 end

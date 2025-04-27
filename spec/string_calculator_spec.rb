@@ -37,5 +37,13 @@ RSpec.describe StringCalculator do
         expect(subject.add(str_of_numbers: '//*\n1*2\n5')).to eq(8)
       end
     end
+
+    context 'handle negative numbers' do
+      it 'throws error with negative numbers in it' do
+        expect(subject.add(str_of_numbers: '3, -4, 6')).to eq('negatives not allowed: -4')
+
+        expect(subject.add(str_of_numbers: '//*\n1*-2\n5*-7')).to eq('negatives not allowed: -2, -7')
+      end
+    end
   end
 end

@@ -23,5 +23,11 @@ RSpec.describe StringCalculator do
         expect(subject.add('200, 5, 10, 15, 120')).to eq(350)
       end
     end
+
+    context 'handle new line as delimiter' do
+      it 'returns sum of all the numbers' do
+        expect(subject.add('2\n3,4\n5')).to eq(14)
+      end
+    end
   end
 end

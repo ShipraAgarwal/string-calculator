@@ -45,5 +45,11 @@ RSpec.describe StringCalculator do
         expect(subject.add(str_of_numbers: '//*\n1*-2\n5*-7')).to eq('negatives not allowed: -2, -7')
       end
     end
+
+    context 'checks out of range numbers' do
+      it 'ignores numbers greater than 1000' do
+        expect(subject.add(str_of_numbers: '6, 8, 1002, 5, 2000, 4')).to eq(23)
+      end
+    end
   end
 end
